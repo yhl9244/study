@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.AccountMapper">
+    <!-- 开启二级缓存 -->
+    <cache/>
+    <select id="selectById" resultType="mybatis.Account">
+        select * from account where id = #{id}
+    </select>
+
+    <update id="updateAccount">
+        UPDATE account SET
+        name = #{name},money = #{money}
+		WHERE id = #{id}
+    </update>
+</mapper>
