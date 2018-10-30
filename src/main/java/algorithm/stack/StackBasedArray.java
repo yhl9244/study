@@ -1,46 +1,53 @@
 package algorithm.stack;
 
+import org.hamcrest.internal.ArrayIterator;
+
 import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.function.Consumer;
 
 /**
- * 基于数组实现的栈
- * @param <Item>
+ * Created by suneee on 2018/10/30.
  */
 public class StackBasedArray<Item> implements Iterable<Item> {
 
-    // 存储数据的数组
-    private Item[] array = (Item[]) new Object[1];
-    // 记录元素个数
-    private Integer n = 0;
-
-    public StackBasedArray() {
-    }
 
     /**
-     * 添加元素
-     * @param item
+     * 存储数据的数组
+     */
+    private Item[] array = (Item[]) new Object[1];
+    /**
+     * 数组大小
+     */
+    private Integer n = 0;
+
+    /**
+     * 保存数据
      */
     public void push(Item item) {
-        if(n == array.length) {
-            //自动扩容
-            resize(2*array.length);
+        if(n == array.length){
+            resize(array.length * 2);
         }
         array[n++] = item;
     }
 
     /**
-     * 删除元素
+     * 删除数据
      * @return
      */
     public Item pop() {
         Item item = array[--n];
         array[n] = null;
-        if(n > 0 && n == array.length/4){
+        if(n > 0 && n == array.length/4) {
             resize(array.length/2);
         }
         return item;
+    }
+
+    /**
+     * 获取上一次添加元素不删除
+     * @return
+     */
+    public Item peek(){
+        return array[n-1];
     }
 
     public boolean isEmpty() {
@@ -53,29 +60,25 @@ public class StackBasedArray<Item> implements Iterable<Item> {
 
     private void resize(int len) {
         Item[] temp = (Item[]) new Object[len];
-        for (Integer i = 0; i < n; i++) {
+        for (int i= 0; i < n; i++){
             temp[i] = array[i];
         }
         array = temp;
     }
 
-    //返回栈中最近添加的元素而不删除它
-    public Item peek() {
-        return array[n-1];
-    }
 
     @Override
     public Iterator<Item> iterator() {
         return new ArrayIterator();
     }
 
-    class ArrayIterator implements Iterator{
+    class ArrayIterator implements Iterator {
 
         int i = n;
 
         @Override
         public boolean hasNext() {
-            return i > 0;
+            return i>0;
         }
 
         @Override
@@ -85,19 +88,21 @@ public class StackBasedArray<Item> implements Iterable<Item> {
     }
 
     public static void main(String[] args) {
-        StackBasedArray<Integer> stackBasedArray = new StackBasedArray<>();
-        stackBasedArray.push(1);
-        stackBasedArray.push(2);
-        stackBasedArray.push(3);
-        stackBasedArray.push(4);
-        System.out.println(stackBasedArray.peek());
-        Iterator<Integer> iterator = stackBasedArray.iterator();
+        StackBasedArray<Integer> array = new StackBasedArray<>();
+        array.push(1);
+        array.push(2);
+        array.push(3);
+        array.push(4);
+        array.push(5);
+        Iterator<Integer> iterator = array.iterator();
         while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
-        stackBasedArray.pop();
-        stackBasedArray.pop();
-        iterator = stackBasedArray.iterator();
+        System.out.println(array.peek());
+        System.out.println(array.pop());
+        System.out.println(array.pop());
+
+        iterator = array.iterator();
         while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }

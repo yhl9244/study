@@ -3,72 +3,72 @@ package algorithm.stack;
 import java.util.Iterator;
 
 /**
- * 基于链表的栈实现
- * @param <Item>
+ * Created by suneee on 2018/10/30.
  */
 public class StackBasedLinkedList<Item> implements Iterable<Item> {
+
+    private Node first;
+    private Integer n = 0;
 
     private class Node {
         Item item;
         Node next;
     }
 
-    private Node first;
-    private Integer n = 0;
-
-    public StackBasedLinkedList() {
+    /**
+     * 添加数据
+     * @param item
+     */
+    public void push(Item item) {
+        Node newNode = new Node();
+        newNode.item = item;
+        if(first == null) {
+            first = newNode;
+        } else {
+            newNode.next = first;
+            first = newNode;
+        }
+        n++;
     }
 
     /**
-     * 添加元素
-     * @param item
+     * 删除数据
+     * @return
      */
-    public void push(Item item){
-       /* Node oldFirst = first;
-        first = new Node();
-        first.item = item;
-        first.next = oldFirst;
-        n++;*/
-       Node newNode = new Node();
-       newNode.item = item;
-       if(first == null){
-           first = newNode;
-       }else{
-           newNode.next = first;
-           first = newNode;
-       }
-    }
-
     public Item pop() {
-        if (first == null) return null;
+        if(first == null) return null;
         Item item = first.item;
         first = first.next;
         n--;
         return item;
     }
 
-    //是否为空
-    public boolean isEmpty(){
+    /**
+     * 获取刚添加数据不删除
+     * @return
+     */
+    public Item peek() {
+        return first.item;
+    }
+
+    public boolean isEmpty() {
         return n == 0;
     }
-    //元素数量
-    public int size(){
+
+    public int size() {
         return n;
-    }
-    //返回栈中最近添加的元素而不删除它
-    public Item peek(){
-        return first.item;
     }
 
     @Override
     public Iterator<Item> iterator() {
-        return new LinkedIterator();
+        return new LinkedListIterator();
     }
 
-    private class LinkedIterator implements Iterator<Item> {
+    private class LinkedListIterator implements Iterator<Item> {
 
+        Node node = first;
         int i = n;
-        Node t = first;
+
         @Override
         public boolean hasNext() {
             return i > 0;
@@ -76,27 +76,27 @@ public class StackBasedLinkedList<Item> implements Iterable<Item> {
 
         @Override
         public Item next() {
-            Item item = t.item;
-            t =t.next;
+            Item item = node.item;
+            node = node.next;
             i--;
             return item;
         }
     }
 
     public static void main(String[] args) {
-        StackBasedLinkedList<Integer> stackBasedLinkedList = new StackBasedLinkedList<>();
-        stackBasedLinkedList.push(1);
-        stackBasedLinkedList.push(2);
-        stackBasedLinkedList.push(3);
-        stackBasedLinkedList.push(4);
-        System.out.println(stackBasedLinkedList.peek());
-        Iterator<Integer> iterator = stackBasedLinkedList.iterator();
+        StackBasedLinkedList<Integer> stack = new StackBasedLinkedList<>();
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+        stack.push(4);
+        System.out.println(stack.peek());
+        Iterator<Integer> iterator = stack.iterator();
         while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
-        System.out.println(stackBasedLinkedList.pop());
-        System.out.println(stackBasedLinkedList.pop());
-        iterator = stackBasedLinkedList.iterator();
+        System.out.println(stack.pop());
+        System.out.println(stack.pop());
+        iterator = stack.iterator();
         while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
