@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 /**
  * Created by suneee on 2018/10/30.
+ * 基于链表实现的栈
  */
 public class StackBasedLinkedList<Item> implements Iterable<Item> {
 

@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 /**
  * Created by suneee on 2018/10/30.
+ * 基于数组实现的栈
  */
 public class StackBasedArray<Item> implements Iterable<Item> {
 
