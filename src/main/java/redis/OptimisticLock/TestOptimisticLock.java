@@ -1,17 +1,18 @@
 package redis.OptimisticLock;
 
-import redis.JedisUtil;
+import util.JedisUtil;
 import redis.clients.jedis.Jedis;
 
 import java.util.Set;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Created by suneee on 2018/11/1.
+ */
 public class TestOptimisticLock {
 
     public static void main(String[] args) {
-
         long start = System.currentTimeMillis();
 
         initProduct();
@@ -19,45 +20,39 @@ public class TestOptimisticLock {
         printResult();
 
         long end = System.currentTimeMillis();
-        System.out.println("程序运行时间： "+(end-start)+"ms");
+
+        System.out.println("程序运行时间:" + (end-start) + "ms");
     }
 
-    /**
-     * 初始化商品个数
-     */
     private static void initProduct() {
-        int pruductNum = 100; // 模拟商品个数
+        int productNum = 10;
         String key = "productNum";
-        String clientList = "clientList"; // 抢到商品客户列表
-        Jedis jedis = JedisUtil.getInstance().getJedis();
+        String clientList = "clientList";
 
-        if(jedis.exists(key)) {
+        Jedis jedis = JedisUtil.getInstance().getJedis();
+        if(jedis.exists(key)){
             jedis.del(key);
         }
         if(jedis.exists(clientList)) {
             jedis.del(clientList);
         }
-        jedis.set(key, String.valueOf(pruductNum)); // 初始化商品个数
-        JedisUtil.getInstance().returnJedis(jedis);
 
+        jedis.set(key, String.valueOf(productNum));
+        JedisUtil.getInstance().returnJedis(jedis);
     }
 
-    /*
-     * 初始化顾客开始抢商品
-     */
     private static void initClient() {
         ExecutorService executorService = Executors.newCachedThreadPool();
-        // 模拟客户数目
-        int clientNum = 1000;
+        int clientNum = 100;
         for (int i = 0; i < clientNum; i++) {
-            executorService.execute(new ClentThread(i));
+            executorService.execute(new ClientThread(i));
         }
 
         executorService.shutdown();
 
         while (true) {
             if(executorService.isTerminated()) {
-                System.out.println("所有线程都结束了.....");
+                System.out.println("所有线程执行完毕");
                 break;
             }
 
@@ -71,12 +66,12 @@ public class TestOptimisticLock {
 
     private static void printResult() {
         Jedis jedis = JedisUtil.getInstance().getJedis();
-        Set<String> clientList = jedis.smembers("clientList");
-        int i = 0;
-        for (String s : clientList) {
-            System.out.println("第" + i++ + "个抢到商品，"+s + " ");
-        }
 
+        int i = 0 ;
+        Set<String> clientlist = jedis.smembers("clientlist");
+        for (String s : clientlist) {
+            System.out.println("第" + (i++) + "抢到商品," + s + " ");
+        }
         JedisUtil.getInstance().returnJedis(jedis);
     }
 }
