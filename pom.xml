@@ -6,7 +6,11 @@
 
     <groupId>com.example</groupId>
     <artifactId>testSolr</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>../springboot-test</module>
+    </modules>
 
     <properties>
         <guava.version>18.0</guava.version>
@@ -20,6 +24,8 @@
         <fastjson.version>1.2.29</fastjson.version>
         <ehcache.version>2.6.9</ehcache.version>
         <ehcache-web.version>2.0.4</ehcache-web.version>
+        <tomcat.version>8.5.31</tomcat.version>
+        <spring.version>5.0.8.RELEASE</spring.version>
     </properties>
 
     <build>
@@ -36,17 +42,31 @@
     </build>
 
     <dependencies>
+        <!-- spring start-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>5.0.8.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aop</artifactId>
-            <version>5.0.8.RELEASE</version>
+            <version>${spring.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- spring end-->
 
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -216,6 +236,20 @@
             <version>${ehcache-web.version}</version>
         </dependency>
         <!-- CACHE end -->
+
+        <!--tomcat start -->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jasper</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
+        <!--tomcat end -->
+
 
     </dependencies>
 

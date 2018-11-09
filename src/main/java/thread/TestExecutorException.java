@@ -8,7 +8,7 @@ public class TestExecutorException {
 
         /*ThreadPoolExecutor executor = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 0L,
                 TimeUnit.MILLISECONDS, new SynchronousQueue<>());*/
-        ThreadPoolExecutor executor = new TraceThreadPoolExxcutor(0, Integer.MAX_VALUE, 0L,
+        ThreadPoolExecutor executor = new TraceThreadPoolExecutor(0, Integer.MAX_VALUE, 0L,
                 TimeUnit.MILLISECONDS, new SynchronousQueue<>());
 
         for (int i = 0; i < 5; i++) {
@@ -35,9 +35,9 @@ public class TestExecutorException {
         }
     }
 
-    static class TraceThreadPoolExxcutor extends ThreadPoolExecutor{
+    static class TraceThreadPoolExecutor extends ThreadPoolExecutor{
 
-        public TraceThreadPoolExxcutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
+        public TraceThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue) {
             super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
         }
 
