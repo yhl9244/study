@@ -1,7 +1,5 @@
 package springmybatis.util;
 
-import java.util.Map;
-
 /**
  * Created by suneee on 2018/10/9.
  */

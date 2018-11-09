@@ -1,7 +1,5 @@
 package classloader;
 
-import classloader.Dog;
-
 /**
  * Created by suneee on 2018/9/6.
  */

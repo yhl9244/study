@@ -1,7 +1,5 @@
 package algorithm.stack;
 
-import org.hamcrest.internal.ArrayIterator;
-
 import java.util.Iterator;
 
 /**

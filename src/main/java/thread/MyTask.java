@@ -1,7 +1,5 @@
 package thread;
 
-import netty.protocol.PacketCodec;
-
 import java.util.concurrent.*;
 
 public class MyTask implements Runnable {

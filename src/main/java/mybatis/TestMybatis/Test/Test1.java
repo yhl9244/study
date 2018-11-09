@@ -1,10 +1,7 @@
 package mybatis.TestMybatis.Test;
 
 import mybatis.TestMybatis.anno.Select;
-import mybatis.TestMybatis.config.AppConfig;
 import mybatis.TestMybatis.dao.TestAccounDao;
-import mybatis.TestMybatis.service.AccountService;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;

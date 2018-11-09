@@ -2,7 +2,6 @@ package aop;
 
 import org.apache.xbean.spring.context.ClassPathXmlApplicationContext;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 public class MyAspectTest {
 

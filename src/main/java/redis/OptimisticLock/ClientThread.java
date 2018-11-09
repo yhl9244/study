@@ -3,7 +3,6 @@ package redis.OptimisticLock;
 import util.JedisUtil;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;
-import util.JedisUtils;
 import util.ObjectUtils;
 
 import java.util.List;

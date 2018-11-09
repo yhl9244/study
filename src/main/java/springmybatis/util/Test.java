@@ -1,7 +1,6 @@
 package springmybatis.util;
 
 import springmybatis.service.IndexService;
-import springmybatis.util.AnnotationConfigApplicationContext;
 
 /**
  * Created by suneee on 2018/10/9.

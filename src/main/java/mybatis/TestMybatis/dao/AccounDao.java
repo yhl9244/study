@@ -1,6 +1,5 @@
 package mybatis.TestMybatis.dao;
 
-import mybatis.Account;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
