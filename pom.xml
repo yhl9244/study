@@ -249,7 +249,13 @@
             <version>${tomcat.version}</version>
         </dependency>
         <!--tomcat end -->
-
+        <!--mongodb start-->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+        <!--mongodb end-->
 
     </dependencies>
 
