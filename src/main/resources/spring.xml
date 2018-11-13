@@ -10,19 +10,4 @@
 
     <bean id="loginService" class="aop.LoginServiceImpl"></bean>
     <bean id="loginAspect" class="aop.LoginAspect"></bean>
-
-    <mvc:default-servlet-handler/>
-
-    <mvc:resources mapping="/js/**" location="/static/js/" />
-    <mvc:resources mapping="/styles/**" location="/static/js/" />
-    <mvc:resources mapping="/images/**" location="/static/images" />
-    
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/"/>
-            <mvc:mapping path="/user/**" />
-            <mvc:mapping path="/test/**" />
-            <bean class="springmvc.interceptor.CommonInterceptor"/>
-        </mvc:interceptor>
-    </mvc:interceptors>
 </beans>
