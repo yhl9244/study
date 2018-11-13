@@ -2,6 +2,7 @@ package algorithm.sort;
 
 /**
  * Created by suneee on 2018/11/12.
+ * 插入排序
  */
 public class InsertSort {
 

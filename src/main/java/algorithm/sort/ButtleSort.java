@@ -2,6 +2,7 @@ package algorithm.sort;
 
 /**
  * Created by suneee on 2018/11/8.
+ * 冒泡排序
  */
 public class ButtleSort {
 
