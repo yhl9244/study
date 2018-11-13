@@ -18,8 +18,8 @@ public class InsertSort {
                 }else{
                     break;
                 }
-                arr[j] = value;
             }
+            arr[j+1] = value;
         }
         for (int datum : arr) {
             System.out.print(datum+" ");
@@ -27,8 +27,8 @@ public class InsertSort {
     }
 
     public static void main(String[] args) {
-        insertSort(new int[] {4,5,6,1,2,3});
-        System.out.println();
+        //insertSort(new int[] {4,5,6,1,2,3});
+        //System.out.println();
         insertSort(new int[] {5,3,6,2});
     }
 }
