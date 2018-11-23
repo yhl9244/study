@@ -14,13 +14,15 @@ public class FirstClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        /*System.out.println(new Date() + "客户端写数据");
+        //System.out.println(new Date() + "客户端写数据");
 
-        // 获取数据
-        ByteBuf byteBuffer = getByteBuffer(ctx);
+        for (int i = 0; i < 1000; i++) {
+            // 获取数据
+            ByteBuf byteBuffer = getByteBuffer(ctx, "hello world!");
 
-        // 写数据
-        ctx.channel().writeAndFlush(byteBuffer);*/
+            // 写数据
+            ctx.channel().writeAndFlush(byteBuffer);
+        }
     }
 
     private ByteBuf getByteBuffer(ChannelHandlerContext ctx, String msg) {

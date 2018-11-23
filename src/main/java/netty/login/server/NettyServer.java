@@ -6,8 +6,22 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import netty.codec.PacketDecoder;
+import netty.codec.PacketEncoder;
+import netty.codec.Spliter;
+import netty.login.server.handler.AuthHandler;
+import netty.login.server.handler.LifeCrcleTestHandler;
+import netty.login.server.handler.LoginRequestHandler;
+import netty.login.server.handler.MessageRequestHandler;
+import netty.login.server.handler.inbound.InboundHandlerA;
+import netty.login.server.handler.inbound.InboundHandlerB;
+import netty.login.server.handler.inbound.InboundHandlerC;
+import netty.login.server.handler.outbound.OutboundHanlerA;
+import netty.login.server.handler.outbound.OutboundHanlerB;
+import netty.login.server.handler.outbound.OutboundHanlerC;
 
 import java.util.Date;
 
@@ -29,7 +43,26 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new ServerHandler());
+                        //ch.pipeline().addLast(new ServerHandler());
+                        // 处理读数据逻辑链
+                        //ch.pipeline().addLast(new InboundHandlerA());
+                        //ch.pipeline().addLast(new InboundHandlerB());
+                        //ch.pipeline().addLast(new InboundHandlerC());
+
+                        // 处理写数据逻辑链
+                        //ch.pipeline().addLast(new OutboundHanlerA());
+                        //ch.pipeline().addLast(new OutboundHanlerB());
+                        //ch.pipeline().addLast(new OutboundHanlerC());
+
+                        //ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 7, 4));
+                        //ch.pipeline().addLast(new LifeCrcleTestHandler());
+                        ch.pipeline().addLast(new Spliter());
+                        ch.pipeline().addLast(new PacketDecoder());
+                        ch.pipeline().addLast(new LoginRequestHandler());
+                        ch.pipeline().addLast(new AuthHandler());
+                        ch.pipeline().addLast(new MessageRequestHandler());
+                        ch.pipeline().addLast(new PacketEncoder());
+
                     }
                 });
         bind(serverBootstrap, port);

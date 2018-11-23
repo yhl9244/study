@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class PacketCodec {
 
-    private static final int MAGIC_NUMBER = 0x12345678;
+    public static final int MAGIC_NUMBER = 0x12345678;
 
     private static final Map<Byte, Class<? extends Packet>> packetMap;
 
@@ -37,6 +37,7 @@ public class PacketCodec {
         serializerMap.put(Serializer.DEFAULT.getSerializerAlgorithm(), new JsonSerializer());
     }
 
+    // 编码
     public ByteBuf encode(ByteBufAllocator byteBufAllocator, Packet packet) {
         // 获取ByteBuf
         ByteBuf buffer = byteBufAllocator.ioBuffer();
@@ -53,6 +54,21 @@ public class PacketCodec {
         return buffer;
     }
 
+    public ByteBuf encode(ByteBuf buffer, Packet packet) {
+        // 序列化对象
+        byte[] bytes = Serializer.DEFAULT.encode(packet);
+
+        buffer.writeInt(MAGIC_NUMBER);
+        buffer.writeByte(packet.getVersion());
+        buffer.writeByte(Serializer.DEFAULT.getSerializerAlgorithm());
+        buffer.writeByte(packet.getCommand());
+        buffer.writeInt(bytes.length);
+        buffer.writeBytes(bytes);
+
+        return buffer;
+    }
+
+    // 解码
     public Packet decode(ByteBuf byteBuf) {
         // 跳过魔数
         byteBuf.skipBytes(4);

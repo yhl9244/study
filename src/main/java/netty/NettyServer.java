@@ -5,6 +5,8 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.FixedLengthFrameDecoder;
+import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -30,6 +32,8 @@ public class NettyServer {
                                 System.out.println(msg);
                             }
                         });*/
+                        // 拆包
+                        ch.pipeline().addLast(new FixedLengthFrameDecoder(12));
                         // 自定义逻辑处理器
                         ch.pipeline().addLast(new FirstServerHandler());
                     }

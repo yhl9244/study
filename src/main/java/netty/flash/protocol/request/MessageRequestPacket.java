@@ -1,17 +1,16 @@
-package netty.protocol.request;
+package netty.flash.protocol.request;
 
-import netty.protocol.Command;
-import netty.protocol.Packet;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import netty.flash.protocol.Packet;
 
-/**
- * Created by suneee on 2018/11/5.
- */
+import static netty.flash.protocol.command.Command.MESSAGE_REQUEST;
+
+@Data
+@NoArgsConstructor
 public class MessageRequestPacket extends Packet {
 
     private String message;
-
-    public MessageRequestPacket() {
-    }
 
     public MessageRequestPacket(String message) {
         this.message = message;
@@ -19,7 +18,7 @@ public class MessageRequestPacket extends Packet {
 
     @Override
     public Byte getCommand() {
-        return Command.MESSAGE_REQUEST;
+        return MESSAGE_REQUEST;
     }
 
     public String getMessage() {

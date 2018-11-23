@@ -9,8 +9,14 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import netty.codec.PacketDecoder;
+import netty.codec.PacketEncoder;
+import netty.codec.Spliter;
+import netty.login.client.handler.LoginResponseHandler;
+import netty.login.client.handler.MessageResponseHandler;
 import netty.protocol.PacketCodec;
 import netty.protocol.request.MessageRequestPacket;
 import netty.util.LoginUtil;
@@ -39,7 +45,14 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new ClientHandler());
+                        //ch.pipeline().addLast(new ClientHandler());
+
+                        //ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(Integer.MAX_VALUE, 7, 4));
+                        ch.pipeline().addLast(new Spliter());
+                        ch.pipeline().addLast(new PacketDecoder());
+                        ch.pipeline().addLast(new LoginResponseHandler());
+                        ch.pipeline().addLast(new MessageResponseHandler());
+                        ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
         connect(bootstrap,host, port, MAX_RETRY);
@@ -75,11 +88,15 @@ public class NettyClient {
                     Scanner scanner = new Scanner(System.in);
                     String s = scanner.nextLine();
 
-                    MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
+                    /*for (int i = 0; i < 1000; i++) {
+                        channel.writeAndFlush(new MessageRequestPacket(s));
+                    }*/
+                    channel.writeAndFlush(new MessageRequestPacket(s));
+                    /*MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
                     messageRequestPacket.setMessage(s);
 
                     ByteBuf encode = PacketCodec.INSTANCE.encode(channel.alloc(), messageRequestPacket);
-                    channel.writeAndFlush(encode);
+                    channel.writeAndFlush(encode);*/
                 }
             }
         }).start();
