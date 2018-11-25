@@ -2,11 +2,11 @@ package netty;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
-import netty.protocol.request.LoginRequestPacket;
-import netty.protocol.Packet;
-import netty.protocol.PacketCodec;
-import netty.serializer.Serializer;
-import netty.serializer.impl.JsonSerializer;
+import netty.message.protocol.Packet;
+import netty.message.protocol.PacketCodeC;
+import netty.message.protocol.request.LoginRequestPacket;
+import netty.message.serialize.Serializer;
+import netty.message.serialize.impl.JsonSerialize;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -32,7 +32,7 @@ public class PacketCodeCTest {
     @Test
     public void encode() {
 
-        Serializer serializer = new JsonSerializer();
+        Serializer serializer = new JsonSerialize();
         LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
 
         loginRequestPacket.setVersion(((byte) 1));
@@ -40,9 +40,8 @@ public class PacketCodeCTest {
         loginRequestPacket.setUserName("zhangsan");
         loginRequestPacket.setPassword("password");
 
-        PacketCodec packetCodeC = new PacketCodec();
-        ByteBuf byteBuf = packetCodeC.encode(ByteBufAllocator.DEFAULT,loginRequestPacket);
-        Packet decodedPacket = packetCodeC.decode(byteBuf);
+        ByteBuf byteBuf = PacketCodeC.INSTANCE.encode(ByteBufAllocator.DEFAULT,loginRequestPacket);
+        Packet decodedPacket = PacketCodeC.INSTANCE.decode(byteBuf);
 
         Assert.assertArrayEquals(serializer.encode(loginRequestPacket), serializer.encode(decodedPacket));
 
