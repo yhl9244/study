@@ -1,17 +1,22 @@
 package netty.message.protocol.request;
 
+import lombok.Data;
 import netty.message.protocol.Packet;
-import netty.message.protocol.command.Command;
 
+import static netty.message.protocol.command.Command.LOGIN_REQUEST;
+
+@Data
 public class LoginRequestPacket extends Packet {
-
     private String userId;
-    private String userName;
+
+    private String username;
+
     private String password;
 
     @Override
     public Byte getCommand() {
-        return Command.LOGIN_REQUEST;
+
+        return LOGIN_REQUEST;
     }
 
     public String getUserId() {
@@ -22,12 +27,12 @@ public class LoginRequestPacket extends Packet {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

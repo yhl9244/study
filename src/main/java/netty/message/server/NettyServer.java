@@ -6,8 +6,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 import netty.message.codec.PacketDecoder;
 import netty.message.codec.PacketEncoder;
 import netty.message.codec.Spliter;
@@ -22,16 +20,18 @@ public class NettyServer {
     private static final int PORT = 8000;
 
     public static void main(String[] args) {
+        NioEventLoopGroup boosGroup = new NioEventLoopGroup();
+        NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
         final ServerBootstrap serverBootstrap = new ServerBootstrap();
-        serverBootstrap.group(new NioEventLoopGroup(), new NioEventLoopGroup())
+        serverBootstrap
+                .group(boosGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 1024)
-                .childOption(ChannelOption.TCP_NODELAY, true)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
+                .childOption(ChannelOption.TCP_NODELAY, true)
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
-                    @Override
-                    protected void initChannel(NioSocketChannel ch) throws Exception {
+                    protected void initChannel(NioSocketChannel ch) {
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginRequestHandler());
@@ -40,19 +40,17 @@ public class NettyServer {
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
-        bind(serverBootstrap,PORT);
+
+
+        bind(serverBootstrap, PORT);
     }
 
-    private static void bind(ServerBootstrap serverBootstrap, int port){
-        serverBootstrap.bind(port).addListener(new GenericFutureListener<Future<? super Void>>() {
-            @Override
-            public void operationComplete(Future<? super Void> future) throws Exception {
-                if(future.isSuccess()) {
-                    System.out.println(new Date() + ": 端口[" + port + "]绑定成功!");
-                }else{
-                    System.err.println("端口[" + port + "]绑定失败!");
-                    bind(serverBootstrap, port + 1);
-                }
+    private static void bind(final ServerBootstrap serverBootstrap, final int port) {
+        serverBootstrap.bind(port).addListener(future -> {
+            if (future.isSuccess()) {
+                System.out.println(new Date() + ": 端口[" + port + "]绑定成功!");
+            } else {
+                System.err.println("端口[" + port + "]绑定失败!");
             }
         });
     }

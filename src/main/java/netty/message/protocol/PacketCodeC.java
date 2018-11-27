@@ -1,89 +1,107 @@
 package netty.message.protocol;
 
+import com.alibaba.fastjson.serializer.JSONSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
-import netty.message.protocol.command.Command;
 import netty.message.protocol.request.LoginRequestPacket;
 import netty.message.protocol.request.MessageRequestPacket;
 import netty.message.protocol.response.LoginResponsePacket;
 import netty.message.protocol.response.MessageResponsePacket;
 import netty.message.serialize.Serializer;
+import netty.message.serialize.impl.JsonSerialize;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static netty.message.protocol.command.Command.*;
 
 public class PacketCodeC {
 
     public static final int MAGIC_NUMBER = 0x12345678;
     public static final PacketCodeC INSTANCE = new PacketCodeC();
 
-    private final Map<Byte, Class<? extends Packet>> packetMap;
-    private final Map<Byte, Serializer> serializeMap;
+    private final Map<Byte, Class<? extends Packet>> packetTypeMap;
+    private final Map<Byte, Serializer> serializerMap;
+
 
     private PacketCodeC() {
-        packetMap = new HashMap<>();
-        packetMap.put(Command.LOGIN_REQUEST, LoginRequestPacket.class);
-        packetMap.put(Command.LOGIN_RESPONSE, LoginResponsePacket.class);
-        packetMap.put(Command.MESSAGE_REQUEST, MessageRequestPacket.class);
-        packetMap.put(Command.MESSAGE_RESPONSE, MessageResponsePacket.class);
+        packetTypeMap = new HashMap<>();
+        packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
+        packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
+        packetTypeMap.put(MESSAGE_REQUEST, MessageRequestPacket.class);
+        packetTypeMap.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
 
-        serializeMap = new HashMap<>();
-        serializeMap.put(Serializer.DEFAULT.getSerializeAlgorithm(), Serializer.DEFAULT);
+        serializerMap = new HashMap<>();
+        Serializer serializer = new JsonSerialize();
+        serializerMap.put(serializer.getSerializerAlogrithm(), serializer);
     }
 
-    public void encode(ByteBuf byteBuf, Packet packet){
-        // 序列化java对象
-        byte[] bytes = Serializer.DEFAULT.encode(packet);
-        // 编码
+    public void encode(ByteBuf byteBuf, Packet packet) {
+        // 1. 序列化 java 对象
+        byte[] bytes = Serializer.DEFAULT.serialize(packet);
+
+        // 2. 实际编码过程
         byteBuf.writeInt(MAGIC_NUMBER);
         byteBuf.writeByte(packet.getVersion());
-        byteBuf.writeByte(Serializer.DEFAULT.getSerializeAlgorithm());
+        byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlogrithm());
         byteBuf.writeByte(packet.getCommand());
         byteBuf.writeInt(bytes.length);
         byteBuf.writeBytes(bytes);
     }
 
-    public ByteBuf encode(ByteBufAllocator byteBufAllocator, Packet packet){
-        // 序列化java对象
-        byte[] bytes = Serializer.DEFAULT.encode(packet);
-        // 编码
+    public ByteBuf encode(ByteBufAllocator byteBufAllocator, Packet packet) {
+        // 1. 序列化 java 对象
+        byte[] bytes = Serializer.DEFAULT.serialize(packet);
+
+        // 2. 实际编码过程
         ByteBuf byteBuf = byteBufAllocator.ioBuffer();
         byteBuf.writeInt(MAGIC_NUMBER);
         byteBuf.writeByte(packet.getVersion());
-        byteBuf.writeByte(Serializer.DEFAULT.getSerializeAlgorithm());
+        byteBuf.writeByte(Serializer.DEFAULT.getSerializerAlogrithm());
         byteBuf.writeByte(packet.getCommand());
         byteBuf.writeInt(bytes.length);
         byteBuf.writeBytes(bytes);
+
         return byteBuf;
     }
 
-    public Packet decode(ByteBuf byteBuf){
-        // 跳过魔数
+
+    public Packet decode(ByteBuf byteBuf) {
+        // 跳过 magic number
         byteBuf.skipBytes(4);
-        // 跳过版本
+
+        // 跳过版本号
         byteBuf.skipBytes(1);
+
         // 序列化算法
-        byte serializerAlgorithm = byteBuf.readByte();
-        // 命令
+        byte serializeAlgorithm = byteBuf.readByte();
+
+        // 指令
         byte command = byteBuf.readByte();
-        // 数据长度
+
+        // 数据包长度
         int length = byteBuf.readInt();
+
         byte[] bytes = new byte[length];
         byteBuf.readBytes(bytes);
 
-        Class<? extends Packet> packetType = getPacketType(command);
-        Serializer serializer = getSerializer(serializerAlgorithm);
-        if(serializer != null && packetType != null){
-            return serializer.decode(packetType, bytes);
+        Class<? extends Packet> requestType = getRequestType(command);
+        Serializer serializer = getSerializer(serializeAlgorithm);
+
+        if (requestType != null && serializer != null) {
+            return serializer.deserialize(requestType, bytes);
         }
+
         return null;
     }
 
-    private Serializer getSerializer(byte serializerAlgorithm) {
-        return serializeMap.get(serializerAlgorithm);
+    private Serializer getSerializer(byte serializeAlgorithm) {
+
+        return serializerMap.get(serializeAlgorithm);
     }
 
-    private Class<? extends Packet> getPacketType(byte command) {
-        return packetMap.get(command);
+    private Class<? extends Packet> getRequestType(byte command) {
+
+        return packetTypeMap.get(command);
     }
 }

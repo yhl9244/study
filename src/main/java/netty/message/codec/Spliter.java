@@ -6,7 +6,6 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import netty.message.protocol.PacketCodeC;
 
 public class Spliter extends LengthFieldBasedFrameDecoder {
-
     private static final int LENGTH_FIELD_OFFSET = 7;
     private static final int LENGTH_FIELD_LENGTH = 4;
 
@@ -16,10 +15,11 @@ public class Spliter extends LengthFieldBasedFrameDecoder {
 
     @Override
     protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
-        if(in.getInt(in.readerIndex()) != PacketCodeC.MAGIC_NUMBER){
+        if (in.getInt(in.readerIndex()) != PacketCodeC.MAGIC_NUMBER) {
             ctx.channel().close();
             return null;
         }
+
         return super.decode(ctx, in);
     }
 }

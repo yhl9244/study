@@ -9,7 +9,7 @@ import netty.message.protocol.PacketCodeC;
 public class PacketEncoder extends MessageToByteEncoder<Packet> {
 
     @Override
-    protected void encode(ChannelHandlerContext ctx, Packet msg, ByteBuf out) throws Exception {
-        PacketCodeC.INSTANCE.encode(out,msg);
+    protected void encode(ChannelHandlerContext ctx, Packet packet, ByteBuf out) {
+        PacketCodeC.INSTANCE.encode(out, packet);
     }
 }

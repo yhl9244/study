@@ -1,15 +1,19 @@
 package netty.message.protocol.response;
 
+import lombok.Data;
 import netty.message.protocol.Packet;
-import netty.message.protocol.command.Command;
 
+import static netty.message.protocol.command.Command.MESSAGE_RESPONSE;
+
+@Data
 public class MessageResponsePacket extends Packet {
 
     private String message;
 
     @Override
     public Byte getCommand() {
-        return Command.MESSAGE_RESPONSE;
+
+        return MESSAGE_RESPONSE;
     }
 
     public String getMessage() {

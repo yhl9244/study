@@ -37,13 +37,13 @@ public class PacketCodeCTest {
 
         loginRequestPacket.setVersion(((byte) 1));
         loginRequestPacket.setUserId("123");
-        loginRequestPacket.setUserName("zhangsan");
+        loginRequestPacket.setUsername("zhangsan");
         loginRequestPacket.setPassword("password");
 
         ByteBuf byteBuf = PacketCodeC.INSTANCE.encode(ByteBufAllocator.DEFAULT,loginRequestPacket);
         Packet decodedPacket = PacketCodeC.INSTANCE.decode(byteBuf);
 
-        Assert.assertArrayEquals(serializer.encode(loginRequestPacket), serializer.encode(decodedPacket));
+        Assert.assertArrayEquals(serializer.serialize(loginRequestPacket), serializer.serialize(decodedPacket));
 
     }
 }

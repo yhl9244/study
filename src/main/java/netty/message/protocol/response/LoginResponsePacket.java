@@ -1,23 +1,27 @@
 package netty.message.protocol.response;
 
+import lombok.Data;
 import netty.message.protocol.Packet;
-import netty.message.protocol.command.Command;
 
+import static netty.message.protocol.command.Command.LOGIN_RESPONSE;
+
+@Data
 public class LoginResponsePacket extends Packet {
+    private boolean success;
 
-    private Boolean success;
     private String reason;
+
 
     @Override
     public Byte getCommand() {
-        return Command.LOGIN_RESPONSE;
+        return LOGIN_RESPONSE;
     }
 
-    public Boolean getSuccess() {
+    public boolean isSuccess() {
         return success;
     }
 
-    public void setSuccess(Boolean success) {
+    public void setSuccess(boolean success) {
         this.success = success;
     }
 

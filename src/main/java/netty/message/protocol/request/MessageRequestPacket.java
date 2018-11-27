@@ -1,14 +1,19 @@
 package netty.message.protocol.request;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import netty.message.protocol.Packet;
-import netty.message.protocol.command.Command;
-import netty.message.protocol.response.MessageResponsePacket;
 
+import static netty.message.protocol.command.Command.MESSAGE_REQUEST;
+
+@Data
+@NoArgsConstructor
 public class MessageRequestPacket extends Packet {
 
     private String message;
 
-    public MessageRequestPacket(){}
+    public MessageRequestPacket() {
+    }
 
     public MessageRequestPacket(String message) {
         this.message = message;
@@ -16,7 +21,7 @@ public class MessageRequestPacket extends Packet {
 
     @Override
     public Byte getCommand() {
-        return Command.MESSAGE_REQUEST;
+        return MESSAGE_REQUEST;
     }
 
     public String getMessage() {
