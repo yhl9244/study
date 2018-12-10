@@ -10,6 +10,7 @@ import static netty.message.protocol.command.Command.MESSAGE_REQUEST;
 @NoArgsConstructor
 public class MessageRequestPacket extends Packet {
 
+    private String toUserid;
     private String message;
 
     public MessageRequestPacket() {
@@ -22,6 +23,14 @@ public class MessageRequestPacket extends Packet {
     @Override
     public Byte getCommand() {
         return MESSAGE_REQUEST;
+    }
+
+    public String getToUserid() {
+        return toUserid;
+    }
+
+    public void setToUserid(String toUserid) {
+        this.toUserid = toUserid;
     }
 
     public String getMessage() {
