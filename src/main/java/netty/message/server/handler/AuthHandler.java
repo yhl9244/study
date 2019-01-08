@@ -2,13 +2,21 @@ package netty.message.server.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import netty.message.session.Session;
 import netty.message.util.LoginUtil;
+import netty.message.util.SessionUtil;
 
 public class AuthHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (!LoginUtil.hasLogin(ctx.channel())) {
+        /*if (!LoginUtil.hasLogin(ctx.channel())) {
+            ctx.channel().close();
+        } else {
+            ctx.pipeline().remove(this);
+            super.channelRead(ctx, msg);
+        }*/
+        if (!SessionUtil.hasLogin(ctx.channel())) {
             ctx.channel().close();
         } else {
             ctx.pipeline().remove(this);

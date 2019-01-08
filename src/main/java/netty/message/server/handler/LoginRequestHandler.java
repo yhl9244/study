@@ -19,7 +19,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
         LoginResponsePacket loginResponsePacket = new LoginResponsePacket();
         loginResponsePacket.setVersion(loginRequestPacket.getVersion());
-        loginRequestPacket.setUsername(loginRequestPacket.getUsername());
+        loginResponsePacket.setUserName(loginRequestPacket.getUsername());
         if (valid(loginRequestPacket)) {
             loginResponsePacket.setSuccess(true);
             String userId = randomUserId();
