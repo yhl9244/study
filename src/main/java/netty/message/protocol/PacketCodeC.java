@@ -3,9 +3,13 @@ package netty.message.protocol;
 import com.alibaba.fastjson.serializer.JSONSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import netty.message.protocol.request.CreateGroupRequestPacket;
 import netty.message.protocol.request.LoginRequestPacket;
+import netty.message.protocol.request.LogoutRequestPacket;
 import netty.message.protocol.request.MessageRequestPacket;
+import netty.message.protocol.response.CreateGroupResponsePacket;
 import netty.message.protocol.response.LoginResponsePacket;
+import netty.message.protocol.response.LogoutResponsePacket;
 import netty.message.protocol.response.MessageResponsePacket;
 import netty.message.serialize.Serializer;
 import netty.message.serialize.impl.JsonSerialize;
@@ -30,6 +34,10 @@ public class PacketCodeC {
         packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
         packetTypeMap.put(MESSAGE_REQUEST, MessageRequestPacket.class);
         packetTypeMap.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
+        packetTypeMap.put(CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
+        packetTypeMap.put(CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
+        packetTypeMap.put(LOGOUT_REQUEST, LogoutRequestPacket.class);
+        packetTypeMap.put(LOGOUT_RESPONSE, LogoutResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JsonSerialize();

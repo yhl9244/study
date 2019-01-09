@@ -6,6 +6,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import netty.message.protocol.request.LoginRequestPacket;
 import netty.message.protocol.response.LoginResponsePacket;
 import netty.message.session.Session;
+import netty.message.util.IDUtil;
 import netty.message.util.LoginUtil;
 import netty.message.util.SessionUtil;
 
@@ -22,7 +23,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         loginResponsePacket.setUserName(loginRequestPacket.getUsername());
         if (valid(loginRequestPacket)) {
             loginResponsePacket.setSuccess(true);
-            String userId = randomUserId();
+            String userId = IDUtil.randomId();
             loginResponsePacket.setUserId(userId);
             //System.out.println(new Date() + ": 登录成功!");
             //LoginUtil.markAsLogin(ctx.channel());
@@ -36,11 +37,6 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
         // 登录响应
         ctx.channel().writeAndFlush(loginResponsePacket);
-    }
-
-
-    private static String randomUserId() {
-        return UUID.randomUUID().toString().split("-")[0];
     }
 
     private boolean valid(LoginRequestPacket loginRequestPacket) {

@@ -9,9 +9,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import netty.message.codec.PacketDecoder;
 import netty.message.codec.PacketEncoder;
 import netty.message.codec.Spliter;
-import netty.message.server.handler.AuthHandler;
-import netty.message.server.handler.LoginRequestHandler;
-import netty.message.server.handler.MessageRequestHandler;
+import netty.message.server.handler.*;
 
 import java.util.Date;
 
@@ -37,6 +35,8 @@ public class NettyServer {
                         ch.pipeline().addLast(new LoginRequestHandler());
                         ch.pipeline().addLast(new AuthHandler());
                         ch.pipeline().addLast(new MessageRequestHandler());
+                        ch.pipeline().addLast(new CreateGroupRequestHandler());
+                        //ch.pipeline().addLast(new LogoutRequestHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
