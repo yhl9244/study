@@ -16,7 +16,7 @@ public class ScanUtil  {
     public static Map<String, Object> map = new HashMap<String, Object>();
 
     public static void doScan() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        String packagePath = "F:\\testSolr\\src\\main\\java\\springmybatis";
+        String packagePath = "E:\\study\\src\\main\\java\\springmybatis";
         File file = new File(packagePath);
         String[] list = file.list();
         for (String s : list) {

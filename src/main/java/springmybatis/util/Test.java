@@ -1,5 +1,6 @@
 package springmybatis.util;
 
+import springmybatis.controller.IndexController;
 import springmybatis.service.IndexService;
 
 /**
@@ -9,8 +10,8 @@ public class Test {
 
     public static void main(String[] args) throws IllegalAccessException, ClassNotFoundException, InstantiationException {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        IndexService indexService = (IndexService) context.getBean("IndexService");
-        indexService.index();
-        System.out.println(indexService);
+        IndexController indexController = (IndexController) context.getBean("IndexController");
+        indexController.index();
+        System.out.println(indexController);
     }
 }
