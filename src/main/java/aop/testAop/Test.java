@@ -5,7 +5,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
  * Created by suneee on 2018/8/3.
  */
-public class Main {
+public class Test {
 
     public static void main(String[] args) {
         // 原生方法
