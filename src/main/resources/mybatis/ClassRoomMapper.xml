@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.self.ClassRoomMapper">
+    <!--嵌套结果映射（一对多）-->
+    <resultMap id="oneToManyMap1" type="mybatis.self.ClassRoom">
+        <id column="cr_id" property="id" />
+        <result column="className" property="className"/>
+        <result column="classAddress" property="classAddress"/>
+        <collection property="studentList" column="cr_id" ofType="mybatis.self.Student">
+            <result column="name" property="name"/>
+            <result column="pass" property="pass"/>
+        </collection>
+    </resultMap>
+
+    <select id="findOneToMany1" resultMap="oneToManyMap1">
+       SELECT  cr.id cr_id, className,classAddress ,name,pass from classroom cr inner join student std
+               on cr.id=std.classroomId where cr.id=#{id}
+   </select>
+
+    <!--嵌套 Select 查询（一对多）-->
+    <resultMap id="OneToManyMap2" type="mybatis.self.ClassRoom">
+        <id column="id" property="id" />
+        <result column="className" property="className"/>
+        <result column="classAddress" property="classAddress"/>
+        <collection property="studentList" column="id" ofType="mybatis.self.Student" select="findOneToManyChild2">
+            <result column="name" property="name"></result>
+            <result column="pass" property="pass"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="findOneToMany2" resultMap="OneToManyMap2">
+        select id,className,classAddress from  classroom where id =#{id}
+    </select>
+
+    <select id="findOneToManyChild2" resultType="mybatis.self.Student">
+        select *  from  student where classroomId=#{cid}
+    </select>
+</mapper>

@@ -16,5 +16,8 @@
     </environments>
     <mappers>
         <mapper resource="mybatis/AccountMapper.xml"/>
+        <mapper resource="mybatis/ClassRoomMapper.xml"/>
+        <mapper resource="mybatis/StudentMapper.xml"/>
+        <mapper resource="mybatis/TeacherAndStudentMapper.xml"/>
     </mappers>
 </configuration>

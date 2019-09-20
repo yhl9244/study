@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.self.StudentMapper">
+    <!--第一种方式（多对一）-->
+    <resultMap id="ManyToOneMap1" type="mybatis.self.Student">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="pass" property="pass"/>
+        <association property="classRoom" javaType="mybatis.self.ClassRoom">
+            <result column="className" property="className"/>
+            <result column="classAddress" property="classAddress"/>
+        </association>
+    </resultMap>
+
+
+    <select id="findManyToOne1" resultMap="ManyToOneMap1">
+        SELECT name,pass,className,classAddress
+        FROM student stu INNER JOIN classroom cr
+        ON stu.classRoomId = cr.id
+    </select>
+
+    <!--第二种方式（多对一）-->
+    <resultMap id="ManyToOneMap2" type="mybatis.self.Student">
+        <result column="name" property="name"/>
+        <result column="pass" property="pass"/>
+        <association property="classRoom" javaType="mybatis.self.ClassRoom" column="classroomId" select="findManyToOne2Child">
+            <result column="className" property="className"/>
+            <result column="classAddress" property="classAddress"/>
+        </association>
+    </resultMap>
+
+    <select id="findManyToOne2" resultMap="ManyToOneMap2">
+        SELECT name,pass,classroomId FROM student
+    </select>
+
+    <select id="findManyToOne2Child" resultType="mybatis.self.ClassRoom">
+        SELECT id,className,classAddress FROM classroom WHERE id = #{id}
+    </select>
+</mapper>

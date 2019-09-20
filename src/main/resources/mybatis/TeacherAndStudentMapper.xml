@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis.self.TeacherAndStudentMapper">
+    <resultMap id="ManyToMany" type="mybatis.self.Teacher">
+        <id column="teacherId" property="id"/>
+        <result column="teacherName" property="name"/>
+        <collection property="studentList" ofType="mybatis.self.Student" >
+            <id column="studentId"  property="id"/>
+            <result column="studentName" property="name"/>
+            <result column="studentPass" property="pass"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="findManyToMany" resultMap="ManyToMany">
+         SELECT  t.id teacherId,t.name teacherName,s.id studentId,s.Name studentName,s.pass  studentPass from  teacherAndstudent tas INNER JOIN student s ON s.id=tas.studentId
+             INNER JOIN teacher t on t.id=tas.teacherId;
+     </select>
+</mapper>
