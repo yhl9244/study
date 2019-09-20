@@ -4,12 +4,12 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!--IOC-->
-    <bean id="helloworld" class="com.test.ioc.HelloWorld">
+    <!--<bean id="helloworld" class="com.test.ioc.HelloWorld">
         <property name="name" value="yhl"></property>
-    </bean>
+    </bean>-->
 
     <!--AOP-->
-    <bean id="testAdvisor" class="com.test.aop.TestAdvisor"></bean>
+    <!--<bean id="testAdvisor" class="com.test.aop.TestAdvisor"></bean>
     <bean id="target" class="com.test.aop.Target"></bean>
     <bean id="testAop" class="org.springframework.aop.framework.ProxyFactoryBean">
         <property name="targetName">
@@ -20,5 +20,36 @@
                 <value>testAdvisor</value>
             </list>
         </property>
+    </bean>-->
+
+    <!-- 注册被监控实现类 -->
+    <bean id="person" class="aop.self.Person"/>
+    <bean id="dog" class="aop.self.Dog"/>
+
+    <!-- 注册通知实现类 -->
+    <bean id="after" class="aop.self.MyAfterAdvice"/>
+    <!-- 注册类型过滤器 -->
+    <bean id="classFilter" class="aop.self.MyClassFilter"/>
+    <!-- 注册方法匹配器 -->
+    <bean id="methodMatcher" class="aop.self.MyMethodMatcher"/>
+    <!-- 注册切入点 -->
+    <bean id="pointCut" class="aop.self.MyPointCut">
+        <property name="classFilter" ref="classFilter"/>
+        <property name="methodMatcher" ref="methodMatcher"/>
     </bean>
+    <!-- 注册顾问 -->
+    <bean id="myAdvisor" class="aop.self.MyPointCutAdvisor">
+        <property name="advice" ref="after"/>
+        <property name="pointcut" ref="pointCut"/>
+    </bean>
+    <!-- 注册代理对象工厂 -->
+    <!--
+                          此时生成代理对象，只会负责person.play方法监控
+                          与Advice不同，不会对BaseService所有的方法进行监控
+     -->
+    <bean id="personFactory" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" ref="person"/>
+        <property name="interceptorNames" value="myAdvisor"/>
+    </bean>
+
 </beans>
