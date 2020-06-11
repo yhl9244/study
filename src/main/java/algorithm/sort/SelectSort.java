@@ -32,8 +32,8 @@ public class SelectSort {
     public static void main(String[] args) {
         selectSort(new int[]{4,5,6,1,2,3});
         System.out.println();
-        selectSort(new int[]{4,3,6,7});
-        System.out.println();
-        selectSort(new int[]{6,5,4,3,2,1});
+        //selectSort(new int[]{4,3,6,7});
+       // System.out.println();
+        //selectSort(new int[]{6,5,4,3,2,1});
     }
 }
