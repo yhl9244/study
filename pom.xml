@@ -22,7 +22,7 @@
         <ehcache.version>2.6.9</ehcache.version>
         <ehcache-web.version>2.0.4</ehcache-web.version>
         <tomcat.version>8.5.31</tomcat.version>
-        <spring.version>5.0.8.RELEASE</spring.version>
+        <spring.version>5.3.18</spring.version>
     </properties>
 
     <build>
